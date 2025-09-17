@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModaStyle - Tu Estilo, Tu Personalidad</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <div class="nav-container">
+                <div class="logo">
+                    <i class="fas fa-tshirt"></i>
+                    ModaStyle
+                </div>
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#categorias">Categorías</a></li>
+                        <li><a href="#productos">Productos</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <div class="search-box">
+                        <input type="text" placeholder="Buscar productos..." id="searchInput">
+                        <button onclick="buscarProductos()"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="cart-icon" onclick="toggleCart()">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <h1>Tu Estilo, Tu Personalidad</h1>
+            <p>Descubre las últimas tendencias en moda</p>
+            <button class="cta-button" onclick="scrollToCategories()">Explorar Colección</button>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories" id="categorias">
+        <div class="container">
+            <h2 class="section-title">Nuestras Categorías</h2>
+            <p class="section-subtitle">Encuentra el estilo perfecto para cada ocasión</p>
+            <div class="categories-grid">
+                <div class="category-card" onclick="mostrarCategoria('mujer')">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Ropa Femenina">
+                    </div>
+                    <div class="category-content">
+                        <h3>Ropa Femenina</h3>
+                        <p>Elegancia y estilo para la mujer moderna</p>
+                        <button class="category-button">Ver Colección</button>
+                    </div>
+                </div>
+                <div class="category-card" onclick="mostrarCategoria('hombre')">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Ropa Masculina">
+                    </div>
+                    <div class="category-content">
+                        <h3>Ropa Masculina</h3>
+                        <p>Sofisticación y comodidad para el hombre actual</p>
+                        <button class="category-button">Ver Colección</button>
+                    </div>
+                </div>
+                <div class="category-card" onclick="mostrarCategoria('accesorios')">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1506629905877-47b2ac17d1ce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Accesorios">
+                    </div>
+                    <div class="category-content">
+                        <h3>Accesorios</h3>
+                        <p>Complementos que hacen la diferencia</p>
+                        <button class="category-button">Ver Colección</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="productos">
+        <div class="container">
+            <h2 class="section-title">Productos Destacados</h2>
+            <p class="section-subtitle">Los favoritos de nuestros clientes</p>
+            <div class="products-grid" id="productosGrid">
+                <!-- Los productos se cargarán dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="container">
+            <h2>Suscríbete a nuestro Newsletter</h2>
+            <p>Recibe las últimas tendencias y ofertas exclusivas</p>
+            <form class="newsletter-form" onsubmit="suscribirNewsletter(event)">
+                <input type="email" placeholder="Tu email" required>
+                <button type="submit">
+                    <i class="fas fa-paper-plane"></i> Suscribirse
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contacto">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-tshirt"></i> ModaStyle</h3>
+                    <p>Tu destino para la moda más actual y elegante. Calidad, estilo y tendencia en cada prenda.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p><i class="fas fa-envelope"></i> info@modastyle.com</p>
+                    <p><i class="fas fa-phone"></i> +51 999 123 456</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Lima, Perú</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <a href="#inicio">Inicio</a>
+                    <a href="#categorias">Categorías</a>
+                    <a href="#productos">Productos</a>
+                    <a href="#contacto">Contacto</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Información</h3>
+                    <a href="#">Política de Privacidad</a>
+                    <a href="#">Términos y Condiciones</a>
+                    <a href="#">Envíos y Devoluciones</a>
+                    <a href="#">Guía de Tallas</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 ModaStyle. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Carrito de Compras</h3>
+            <button class="close-cart" onclick="toggleCart()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p style="text-align: center; color: #999; margin-top: 50px;">Tu carrito está vacío</p>
+        </div>
+        <div class="cart-total">
+            <h3>Total: $<span id="cartTotal">0.00</span></h3>
+            <button class="checkout-btn" onclick="procederCheckout()">
+                <i class="fas fa-credit-card"></i> Finalizar Compra
+            </button>
+        </div>
+    </div>
+
+    <script src="js/funciones.js"></script>
+</body>
+</html>
