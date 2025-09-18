@@ -4,148 +4,295 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ModaStyle - Tu Estilo, Tu Personalidad</title>
+    <meta name="description" content="ModaStyle - Tu tienda de moda online. Descubre las últimas tendencias en ropa femenina, masculina y accesorios. Envíos a todo el Perú.">
+    <meta name="keywords" content="moda, ropa, tienda online, vestidos, camisas, accesorios, Perú">
+    <meta name="author" content="ModaStyle">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph para redes sociales -->
+    <meta property="og:title" content="ModaStyle - Tu Estilo, Tu Personalidad">
+    <meta property="og:description" content="Descubre las últimas tendencias en moda">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80">
+    <meta property="og:url" content="https://modastyle.com">
+    <meta property="og:type" content="website">
+    
+    <!-- Preload de recursos críticos -->
+    <link rel="preload" href="css/estilos.css" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style">
+    
     <link rel="stylesheet" href="css/estilos.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <!-- Header -->
-    <header class="header" id="header">
+    <header class="header" id="header" role="banner">
         <div class="container">
             <div class="nav-container">
                 <div class="logo">
-                    <i class="fas fa-tshirt"></i>
+                    <i class="fas fa-tshirt" aria-hidden="true"></i>
                     ModaStyle
                 </div>
-                <nav>
-                    <ul class="nav-menu">
-                        <li><a href="#inicio">Inicio</a></li>
-                        <li><a href="#categorias">Categorías</a></li>
-                        <li><a href="#productos">Productos</a></li>
-                        <li><a href="#contacto">Contacto</a></li>
+                <nav role="navigation" aria-label="Navegación principal">
+                    <ul class="nav-menu" role="menubar">
+                        <li role="none"><a href="#inicio" role="menuitem">Inicio</a></li>
+                        <li role="none"><a href="#categorias" role="menuitem">Categorías</a></li>
+                        <li role="none"><a href="#productos" role="menuitem">Productos</a></li>
+                        <li role="none"><a href="#testimonios" role="menuitem">Testimonios</a></li>
+                        <li role="none"><a href="#contacto" role="menuitem">Contacto</a></li>
                     </ul>
                 </nav>
                 <div class="header-actions">
-                    <div class="search-box">
-                        <input type="text" placeholder="Buscar productos..." id="searchInput">
-                        <button onclick="buscarProductos()"><i class="fas fa-search"></i></button>
+                    <div class="search-box" role="search">
+                        <label for="searchInput" class="sr-only">Buscar productos</label>
+                        <input type="text" id="searchInput" placeholder="Buscar productos..." aria-label="Buscar productos">
+                        <button onclick="buscarProductos()" aria-label="Ejecutar búsqueda">
+                            <i class="fas fa-search" aria-hidden="true"></i>
+                        </button>
                     </div>
-                    <div class="cart-icon" onclick="toggleCart()">
-                        <i class="fas fa-shopping-bag"></i>
-                        <span class="cart-count" id="cartCount">0</span>
+                    <div class="cart-icon" onclick="toggleCart()" role="button" tabindex="0" aria-label="Ver carrito de compras">
+                        <i class="fas fa-shopping-bag" aria-hidden="true"></i>
+                        <span class="cart-count" id="cartCount" aria-live="polite">0</span>
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="inicio">
-        <div class="hero-content">
-            <h1>Tu Estilo, Tu Personalidad</h1>
-            <p>Descubre las últimas tendencias en moda</p>
-            <button class="cta-button" onclick="scrollToCategories()">Explorar Colección</button>
-        </div>
-    </section>
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="inicio" aria-labelledby="hero-title">
+            <div class="hero-content">
+                <h1 id="hero-title">Tu Estilo, Tu Personalidad</h1>
+                <p>Descubre las últimas tendencias en moda</p>
+                <button class="cta-button" onclick="scrollToCategories()" aria-describedby="hero-description">
+                    Explorar Colección
+                </button>
+            </div>
+        </section>
 
-    <!-- Categories Section -->
-    <section class="categories" id="categorias">
-        <div class="container">
-            <h2 class="section-title">Nuestras Categorías</h2>
-            <p class="section-subtitle">Encuentra el estilo perfecto para cada ocasión</p>
-            <div class="categories-grid">
-                <div class="category-card" onclick="mostrarCategoria('mujer')">
-                    <div class="category-image">
-                        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Ropa Femenina">
-                    </div>
-                    <div class="category-content">
-                        <h3>Ropa Femenina</h3>
-                        <p>Elegancia y estilo para la mujer moderna</p>
-                        <button class="category-button">Ver Colección</button>
-                    </div>
-                </div>
-                <div class="category-card" onclick="mostrarCategoria('hombre')">
-                    <div class="category-image">
-                        <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Ropa Masculina">
-                    </div>
-                    <div class="category-content">
-                        <h3>Ropa Masculina</h3>
-                        <p>Sofisticación y comodidad para el hombre actual</p>
-                        <button class="category-button">Ver Colección</button>
-                    </div>
-                </div>
-                <div class="category-card" onclick="mostrarCategoria('accesorios')">
-                    <div class="category-image">
-                        <img src="https://images.unsplash.com/photo-1506629905877-47b2ac17d1ce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Accesorios">
-                    </div>
-                    <div class="category-content">
-                        <h3>Accesorios</h3>
-                        <p>Complementos que hacen la diferencia</p>
-                        <button class="category-button">Ver Colección</button>
-                    </div>
+        <!-- Categories Section -->
+        <section class="categories" id="categorias" aria-labelledby="categories-title">
+            <div class="container">
+                <header>
+                    <h2 id="categories-title" class="section-title">Nuestras Categorías</h2>
+                    <p class="section-subtitle">Encuentra el estilo perfecto para cada ocasión</p>
+                </header>
+                <div class="categories-grid">
+                    <article class="category-card" onclick="mostrarCategoria('mujer')" role="button" tabindex="0" aria-label="Ver ropa femenina">
+                        <div class="category-image">
+                            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                                 alt="Ropa Femenina - Colección elegante para la mujer moderna" 
+                                 loading="lazy">
+                        </div>
+                        <div class="category-content">
+                            <h3>Ropa Femenina</h3>
+                            <p>Elegancia y estilo para la mujer moderna</p>
+                            <button class="category-button">Ver Colección</button>
+                        </div>
+                    </article>
+                    <article class="category-card" onclick="mostrarCategoria('hombre')" role="button" tabindex="0" aria-label="Ver ropa masculina">
+                        <div class="category-image">
+                            <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                                 alt="Ropa Masculina - Sofisticación y comodidad para el hombre actual" 
+                                 loading="lazy">
+                        </div>
+                        <div class="category-content">
+                            <h3>Ropa Masculina</h3>
+                            <p>Sofisticación y comodidad para el hombre actual</p>
+                            <button class="category-button">Ver Colección</button>
+                        </div>
+                    </article>
+                    <article class="category-card" onclick="mostrarCategoria('accesorios')" role="button" tabindex="0" aria-label="Ver accesorios">
+                        <div class="category-image">
+                            <img src="https://images.unsplash.com/photo-1506629905877-47b2ac17d1ce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                                 alt="Accesorios - Complementos que hacen la diferencia" 
+                                 loading="lazy">
+                        </div>
+                        <div class="category-content">
+                            <h3>Accesorios</h3>
+                            <p>Complementos que hacen la diferencia</p>
+                            <button class="category-button">Ver Colección</button>
+                        </div>
+                    </article>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Products Section -->
-    <section class="products" id="productos">
-        <div class="container">
-            <h2 class="section-title">Productos Destacados</h2>
-            <p class="section-subtitle">Los favoritos de nuestros clientes</p>
-            <div class="products-grid" id="productosGrid">
-                <!-- Los productos se cargarán dinámicamente -->
+        <!-- Products Section -->
+        <section class="products" id="productos" aria-labelledby="products-title">
+            <div class="container">
+                <header>
+                    <h2 id="products-title" class="section-title">Productos Destacados</h2>
+                    <p class="section-subtitle">Los favoritos de nuestros clientes</p>
+                </header>
+                <div class="products-grid" id="productosGrid" role="grid" aria-label="Lista de productos destacados">
+                    <!-- Los productos se cargarán dinámicamente -->
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials" id="testimonios" aria-labelledby="testimonials-title">
+            <div class="container">
+                <header>
+                    <h2 id="testimonials-title" class="section-title">Lo que dicen nuestros clientes</h2>
+                    <p class="section-subtitle">Experiencias reales de quienes confían en nosotros</p>
+                </header>
+                <div class="testimonials-grid">
+                    <article class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="stars">
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                            </div>
+                            <blockquote>
+                                "La calidad de la ropa es excelente y el envío fue súper rápido. Definitivamente volveré a comprar aquí."
+                            </blockquote>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" 
+                                     alt="Foto de María González" loading="lazy">
+                            </div>
+                            <div class="author-info">
+                                <h4>María González</h4>
+                                <p>Cliente desde 2023</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="stars">
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                            </div>
+                            <blockquote>
+                                "El servicio al cliente es increíble. Me ayudaron a encontrar exactamente lo que buscaba."
+                            </blockquote>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" 
+                                     alt="Foto de Carlos Mendoza" loading="lazy">
+                            </div>
+                            <div class="author-info">
+                                <h4>Carlos Mendoza</h4>
+                                <p>Cliente desde 2022</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="stars">
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                            </div>
+                            <blockquote>
+                                "Los precios son justos y la variedad de estilos es impresionante. ¡Recomendado al 100%!"
+                            </blockquote>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" 
+                                     alt="Foto de Ana Rodríguez" loading="lazy">
+                            </div>
+                            <div class="author-info">
+                                <h4>Ana Rodríguez</h4>
+                                <p>Cliente desde 2024</p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- Newsletter Section -->
-    <section class="newsletter">
+    <section class="newsletter" aria-labelledby="newsletter-title">
         <div class="container">
-            <h2>Suscríbete a nuestro Newsletter</h2>
-            <p>Recibe las últimas tendencias y ofertas exclusivas</p>
-            <form class="newsletter-form" onsubmit="suscribirNewsletter(event)">
-                <input type="email" placeholder="Tu email" required>
-                <button type="submit">
-                    <i class="fas fa-paper-plane"></i> Suscribirse
+            <header>
+                <h2 id="newsletter-title">Suscríbete a nuestro Newsletter</h2>
+                <p>Recibe las últimas tendencias y ofertas exclusivas</p>
+            </header>
+            <form class="newsletter-form" onsubmit="suscribirNewsletter(event)" role="form" aria-label="Suscripción al newsletter">
+                <label for="email-newsletter" class="sr-only">Email para newsletter</label>
+                <input type="email" id="email-newsletter" name="email" placeholder="Tu email" required 
+                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                       title="Ingresa un email válido"
+                       aria-describedby="email-help">
+                <div id="email-help" class="sr-only">Ingresa tu email para recibir ofertas exclusivas</div>
+                <button type="submit" aria-label="Suscribirse al newsletter">
+                    <i class="fas fa-paper-plane" aria-hidden="true"></i> Suscribirse
                 </button>
             </form>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer" id="contacto">
+    <footer class="footer" id="contacto" role="contentinfo">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-section">
-                    <h3><i class="fas fa-tshirt"></i> ModaStyle</h3>
+                <section class="footer-section">
+                    <h3><i class="fas fa-tshirt" aria-hidden="true"></i> ModaStyle</h3>
                     <p>Tu destino para la moda más actual y elegante. Calidad, estilo y tendencia en cada prenda.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    <div class="social-links" role="list" aria-label="Enlaces a redes sociales">
+                        <a href="#" role="listitem" aria-label="Síguenos en Facebook">
+                            <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" role="listitem" aria-label="Síguenos en Instagram">
+                            <i class="fab fa-instagram" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" role="listitem" aria-label="Síguenos en Twitter">
+                            <i class="fab fa-twitter" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" role="listitem" aria-label="Síguenos en Pinterest">
+                            <i class="fab fa-pinterest" aria-hidden="true"></i>
+                        </a>
                     </div>
-                </div>
-                <div class="footer-section">
+                </section>
+                <section class="footer-section">
                     <h3>Contacto</h3>
-                    <p><i class="fas fa-envelope"></i> info@modastyle.com</p>
-                    <p><i class="fas fa-phone"></i> +51 999 123 456</p>
-                    <p><i class="fas fa-map-marker-alt"></i> Lima, Perú</p>
-                </div>
-                <div class="footer-section">
+                    <address>
+                        <p><i class="fas fa-envelope" aria-hidden="true"></i> 
+                           <a href="mailto:info@modastyle.com">info@modastyle.com</a>
+                        </p>
+                        <p><i class="fas fa-phone" aria-hidden="true"></i> 
+                           <a href="tel:+51999123456">+51 999 123 456</a>
+                        </p>
+                        <p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Lima, Perú</p>
+                    </address>
+                </section>
+                <nav class="footer-section" aria-label="Enlaces de navegación">
                     <h3>Enlaces Rápidos</h3>
-                    <a href="#inicio">Inicio</a>
-                    <a href="#categorias">Categorías</a>
-                    <a href="#productos">Productos</a>
-                    <a href="#contacto">Contacto</a>
-                </div>
-                <div class="footer-section">
+                    <ul>
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#categorias">Categorías</a></li>
+                        <li><a href="#productos">Productos</a></li>
+                        <li><a href="#testimonios">Testimonios</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                    </ul>
+                </nav>
+                <nav class="footer-section" aria-label="Enlaces legales">
                     <h3>Información</h3>
-                    <a href="#">Política de Privacidad</a>
-                    <a href="#">Términos y Condiciones</a>
-                    <a href="#">Envíos y Devoluciones</a>
-                    <a href="#">Guía de Tallas</a>
-                </div>
+                    <ul>
+                        <li><a href="#" aria-label="Política de Privacidad">Política de Privacidad</a></li>
+                        <li><a href="#" aria-label="Términos y Condiciones">Términos y Condiciones</a></li>
+                        <li><a href="#" aria-label="Envíos y Devoluciones">Envíos y Devoluciones</a></li>
+                        <li><a href="#" aria-label="Guía de Tallas">Guía de Tallas</a></li>
+                    </ul>
+                </nav>
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2024 ModaStyle. Todos los derechos reservados.</p>
@@ -154,23 +301,23 @@
     </footer>
 
     <!-- Cart Sidebar -->
-    <div class="cart-sidebar" id="cartSidebar">
+    <aside class="cart-sidebar" id="cartSidebar" role="dialog" aria-labelledby="cart-title" aria-modal="true">
         <div class="cart-header">
-            <h3>Carrito de Compras</h3>
-            <button class="close-cart" onclick="toggleCart()">
-                <i class="fas fa-times"></i>
+            <h3 id="cart-title">Carrito de Compras</h3>
+            <button class="close-cart" onclick="toggleCart()" aria-label="Cerrar carrito">
+                <i class="fas fa-times" aria-hidden="true"></i>
             </button>
         </div>
-        <div class="cart-items" id="cartItems">
+        <div class="cart-items" id="cartItems" role="list" aria-label="Productos en el carrito">
             <p style="text-align: center; color: #999; margin-top: 50px;">Tu carrito está vacío</p>
         </div>
         <div class="cart-total">
-            <h3>Total: $<span id="cartTotal">0.00</span></h3>
-            <button class="checkout-btn" onclick="procederCheckout()">
-                <i class="fas fa-credit-card"></i> Finalizar Compra
+            <h3>Total: $<span id="cartTotal" aria-live="polite">0.00</span></h3>
+            <button class="checkout-btn" onclick="procederCheckout()" aria-label="Finalizar compra">
+                <i class="fas fa-credit-card" aria-hidden="true"></i> Finalizar Compra
             </button>
         </div>
-    </div>
+    </aside>
 
     <script src="js/funciones.js"></script>
 </body>
