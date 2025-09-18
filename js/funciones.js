@@ -1,5 +1,7 @@
 // Variables globales
 let carrito = [];
+let currentGalleryImages = [];
+let currentGalleryIndex = 0;
 let productos = [
     {
         id: 1,
@@ -90,11 +92,15 @@ function cargarProductos(productosFiltrados = productos) {
         
         const productCard = `
             <div class="product-card">
-                <div class="product-image">
+                <div class="product-image" onclick="showProductModal(${producto.id})" style="cursor: pointer;">
                     <div class="sale-badge">-${descuento}%</div>
                     <img src="${producto.imagen}" alt="${producto.nombre}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: linear-gradient(45deg, #ff6b6b, #ffd93d); color: white; font-size: 3rem;">
                         <i class="${producto.icono}"></i>
+                    </div>
+                    <div class="product-overlay">
+                        <i class="fas fa-eye"></i>
+                        <span>Ver Detalles</span>
                     </div>
                 </div>
                 <div class="product-info">
@@ -103,9 +109,14 @@ function cargarProductos(productosFiltrados = productos) {
                         <span class="current-price">${producto.precio}</span>
                         <span class="old-price">${producto.precioOriginal}</span>
                     </div>
-                    <button class="add-to-cart" onclick="agregarAlCarrito(${producto.id})">
-                        <i class="fas fa-shopping-bag"></i> Agregar al Carrito
-                    </button>
+                    <div class="product-actions">
+                        <button class="add-to-cart" onclick="agregarAlCarrito(${producto.id})">
+                            <i class="fas fa-shopping-bag"></i> Agregar al Carrito
+                        </button>
+                        <button class="view-details" onclick="showProductModal(${producto.id})">
+                            <i class="fas fa-info-circle"></i> Detalles
+                        </button>
+                    </div>
                 </div>
             </div>
         `;
@@ -378,7 +389,7 @@ function handleScroll() {
 
 // Función para animar elementos al hacer scroll
 function animateOnScroll() {
-    const elements = document.querySelectorAll('.category-card, .product-card');
+    const elements = document.querySelectorAll('.category-card, .product-card, .testimonial-card');
     
     elements.forEach(element => {
         const elementTop = element.getBoundingClientRect().top;
@@ -390,10 +401,44 @@ function animateOnScroll() {
     });
 }
 
+// Función para animar testimonios con efecto de aparición escalonada
+function animateTestimonials() {
+    const testimonialCards = document.querySelectorAll('.testimonial-card');
+    
+    testimonialCards.forEach((card, index) => {
+        const cardTop = card.getBoundingClientRect().top;
+        const cardVisible = 200;
+        
+        if (cardTop < window.innerHeight - cardVisible) {
+            // Aplicar animación con delay escalonado
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 200);
+        }
+    });
+}
+
+// Función para agregar efecto de hover mejorado a testimonios
+function addTestimonialHoverEffects() {
+    const testimonialCards = document.querySelectorAll('.testimonial-card');
+    
+    testimonialCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+}
+
 // Event Listeners
 window.addEventListener('scroll', () => {
     handleScroll();
     animateOnScroll();
+    animateTestimonials();
 });
 
 // Búsqueda con Enter
@@ -462,19 +507,51 @@ document.addEventListener('DOMContentLoaded', function() {
             60% { transform: translateY(-5px); }
         }
         
-        .product-card, .category-card {
+        .product-card, .category-card, .testimonial-card {
             opacity: 0;
             transform: translateY(30px);
         }
         
-        .product-card.animated, .category-card.animated {
+        .product-card.animated, .category-card.animated, .testimonial-card.animated {
             animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        .testimonial-card {
+            transition: all 0.3s ease;
         }
     `;
     document.head.appendChild(additionalStyles);
     
+    // Inicializar efectos de testimonios
+    addTestimonialHoverEffects();
+    
+    // Inicializar efectos de productos
+    addProductHoverEffects();
+    
     // Animar elementos iniciales
     setTimeout(animateOnScroll, 100);
+    setTimeout(animateTestimonials, 200);
+    
+    // Cerrar modales con ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+            closeGallery();
+        }
+    });
+    
+    // Cerrar modales al hacer click fuera
+    document.addEventListener('click', function(e) {
+        const productModal = document.getElementById('productModal');
+        const galleryModal = document.getElementById('galleryModal');
+        
+        if (e.target === productModal) {
+            closeModal();
+        }
+        if (e.target === galleryModal) {
+            closeGallery();
+        }
+    });
 });
 
 // Función para resetear vista de productos
@@ -490,4 +567,281 @@ function resetearVistaProductos() {
     document.getElementById('productos').scrollIntoView({
         behavior: 'smooth'
     });
+}
+
+// ==================== MODAL FUNCTIONS ====================
+
+// Mostrar modal de producto
+function showProductModal(productoId) {
+    const producto = productos.find(p => p.id === productoId);
+    if (!producto) return;
+
+    const modal = document.getElementById('productModal');
+    const modalBody = document.getElementById('modalBody');
+    
+    const descuento = Math.round(((producto.precioOriginal - producto.precio) / producto.precioOriginal) * 100);
+    
+    modalBody.innerHTML = `
+        <div class="product-detail">
+            <div class="product-detail-image">
+                <img src="${producto.imagen}" alt="${producto.nombre}" onclick="openImageGallery('${producto.imagen}')">
+            </div>
+            <div class="product-detail-info">
+                <h2>${producto.nombre}</h2>
+                <div class="product-detail-price">
+                    <span class="current-price">${producto.precio}</span>
+                    <span class="old-price">${producto.precioOriginal}</span>
+                    <span class="discount-badge">-${descuento}%</span>
+                </div>
+                <div class="product-detail-description">
+                    <p>Descubre este increíble producto de nuestra colección ${producto.categoria}. 
+                    Fabricado con los mejores materiales y diseñado para ofrecerte comodidad y estilo. 
+                    Perfecto para cualquier ocasión.</p>
+                </div>
+                <div class="product-actions">
+                    <button class="btn-primary" onclick="agregarAlCarrito(${producto.id}); closeModal();">
+                        <i class="fas fa-shopping-bag"></i> Agregar al Carrito
+                    </button>
+                    <button class="btn-secondary" onclick="openImageGallery('${producto.imagen}')">
+                        <i class="fas fa-images"></i> Ver Galería
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Cerrar modal
+function closeModal() {
+    const modal = document.getElementById('productModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Abrir galería de imágenes
+function openImageGallery(mainImage) {
+    currentGalleryImages = [mainImage];
+    currentGalleryIndex = 0;
+    
+    const galleryModal = document.getElementById('galleryModal');
+    const galleryImage = document.getElementById('galleryImage');
+    const galleryThumbnails = document.getElementById('galleryThumbnails');
+    
+    galleryImage.src = mainImage;
+    galleryImage.alt = 'Imagen del producto';
+    
+    // Generar miniaturas
+    galleryThumbnails.innerHTML = currentGalleryImages.map((img, index) => `
+        <div class="thumbnail ${index === 0 ? 'active' : ''}" onclick="changeImage(${index})">
+            <img src="${img}" alt="Miniatura ${index + 1}">
+        </div>
+    `).join('');
+    
+    galleryModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Cerrar galería
+function closeGallery() {
+    const galleryModal = document.getElementById('galleryModal');
+    galleryModal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Cambiar imagen en galería
+function changeImage(direction) {
+    if (typeof direction === 'number') {
+        currentGalleryIndex = direction;
+    } else {
+        currentGalleryIndex += direction;
+        if (currentGalleryIndex < 0) currentGalleryIndex = currentGalleryImages.length - 1;
+        if (currentGalleryIndex >= currentGalleryImages.length) currentGalleryIndex = 0;
+    }
+    
+    const galleryImage = document.getElementById('galleryImage');
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    
+    galleryImage.src = currentGalleryImages[currentGalleryIndex];
+    
+    thumbnails.forEach((thumb, index) => {
+        thumb.classList.toggle('active', index === currentGalleryIndex);
+    });
+}
+
+// ==================== FORM VALIDATION ====================
+
+// Validar formulario de newsletter
+function validateNewsletterForm(form) {
+    const email = form.querySelector('input[type="email"]');
+    const formGroup = email.closest('.form-group') || createFormGroup(email);
+    
+    // Limpiar estados anteriores
+    formGroup.classList.remove('error', 'success');
+    
+    // Validar email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.value.trim()) {
+        showFieldError(formGroup, 'El email es requerido');
+        return false;
+    }
+    
+    if (!emailRegex.test(email.value)) {
+        showFieldError(formGroup, 'Ingresa un email válido');
+        return false;
+    }
+    
+    showFieldSuccess(formGroup, 'Email válido');
+    return true;
+}
+
+// Crear grupo de formulario si no existe
+function createFormGroup(input) {
+    const formGroup = document.createElement('div');
+    formGroup.className = 'form-group';
+    input.parentNode.insertBefore(formGroup, input);
+    formGroup.appendChild(input);
+    return formGroup;
+}
+
+// Mostrar error en campo
+function showFieldError(formGroup, message) {
+    formGroup.classList.add('error');
+    formGroup.classList.remove('success');
+    
+    let errorMsg = formGroup.querySelector('.error-message');
+    if (!errorMsg) {
+        errorMsg = document.createElement('div');
+        errorMsg.className = 'error-message';
+        formGroup.appendChild(errorMsg);
+    }
+    errorMsg.textContent = message;
+    
+    // Efecto shake
+    formGroup.classList.add('shake');
+    setTimeout(() => formGroup.classList.remove('shake'), 500);
+}
+
+// Mostrar éxito en campo
+function showFieldSuccess(formGroup, message) {
+    formGroup.classList.add('success');
+    formGroup.classList.remove('error');
+    
+    let successMsg = formGroup.querySelector('.success-message');
+    if (!successMsg) {
+        successMsg = document.createElement('div');
+        successMsg.className = 'success-message';
+        formGroup.appendChild(successMsg);
+    }
+    successMsg.textContent = message;
+}
+
+// ==================== DYNAMIC EFFECTS ====================
+
+// Mostrar loading spinner
+function showLoading() {
+    const spinner = document.getElementById('loadingSpinner');
+    spinner.classList.add('active');
+}
+
+// Ocultar loading spinner
+function hideLoading() {
+    const spinner = document.getElementById('loadingSpinner');
+    spinner.classList.remove('active');
+}
+
+// Aplicar efecto de entrada a elementos
+function applyEntranceEffect(element, effect = 'fade-in') {
+    element.classList.add(effect);
+    setTimeout(() => element.classList.remove(effect), 1000);
+}
+
+// Efecto de partículas en botones
+function addParticleEffect(button) {
+    const rect = button.getBoundingClientRect();
+    const particle = document.createElement('div');
+    particle.style.cssText = `
+        position: fixed;
+        left: ${rect.left + rect.width/2}px;
+        top: ${rect.top + rect.height/2}px;
+        width: 4px;
+        height: 4px;
+        background: #667eea;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 1000;
+        animation: particleExplode 0.6s ease-out forwards;
+    `;
+    
+    document.body.appendChild(particle);
+    setTimeout(() => particle.remove(), 600);
+}
+
+// Efecto de hover mejorado para productos
+function addProductHoverEffects() {
+    const productCards = document.querySelectorAll('.product-card');
+    
+    productCards.forEach(card => {
+        const image = card.querySelector('.product-image img');
+        const addButton = card.querySelector('.add-to-cart');
+        
+        card.addEventListener('mouseenter', function() {
+            if (image) {
+                image.style.transform = 'scale(1.1)';
+            }
+            this.style.transform = 'translateY(-10px)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            if (image) {
+                image.style.transform = 'scale(1)';
+            }
+            this.style.transform = 'translateY(0)';
+        });
+        
+        if (addButton) {
+            addButton.addEventListener('click', function() {
+                addParticleEffect(this);
+            });
+        }
+    });
+}
+
+// ==================== ENHANCED INTERACTIONS ====================
+
+// Mejorar función de suscripción con validación
+function suscribirNewsletter(event) {
+    event.preventDefault();
+    
+    if (!validateNewsletterForm(event.target)) {
+        return;
+    }
+    
+    const email = event.target.querySelector('input[type="email"]').value;
+    const button = event.target.querySelector('button');
+    const originalText = button.innerHTML;
+    
+    // Mostrar loading
+    showLoading();
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Suscribiendo...';
+    button.disabled = true;
+    
+    // Simular envío
+    setTimeout(() => {
+        hideLoading();
+        button.innerHTML = '<i class="fas fa-check"></i> ¡Suscrito!';
+        button.style.background = '#4CAF50';
+        
+        mostrarNotificacion('¡Gracias por suscribirte! Recibirás nuestras últimas ofertas.', 'success');
+        
+        // Resetear formulario
+        setTimeout(() => {
+            event.target.reset();
+            button.innerHTML = originalText;
+            button.style.background = '#ff6b6b';
+            button.disabled = false;
+        }, 2000);
+    }, 1500);
 }
